@@ -60,6 +60,9 @@
 	background-color: rgb(255 255 255 / 100%);
 	border-top: none;
 	outline: 3px solid #000000;
+
+	max-height: 300px;
+	overflow: hidden auto;
 }
 
 .option {
