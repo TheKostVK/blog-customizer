@@ -2,7 +2,7 @@ import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 
 import styles from './ArticleParamsForm.module.scss';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { clsx } from 'clsx';
 import { Text } from 'src/ui/text';
 import { RadioGroup } from 'src/ui/radio-group';
@@ -17,6 +17,7 @@ import {
 	fontFamilyOptions,
 	fontSizeOptions,
 } from 'src/constants/articleProps';
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 
 type ArticleParamsFormProps = {
 	settings: ArticleStateType;
@@ -29,14 +30,12 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const [draftSettings, setDraftSettings] =
 		useState<ArticleStateType>(settings);
 
+	const sideMenuRef = useRef<HTMLDivElement>(null);
+
 	const [sideMenuIsOpen, setSideMenuIsOpen] = useState<boolean>(false);
 
-	useEffect(() => {
-		setDraftSettings(settings);
-	}, [settings]);
-
-	const handleSideMenuClick = () => {
-		setSideMenuIsOpen(!sideMenuIsOpen);
+	const handleSideMenuClick = (value: boolean) => {
+		setSideMenuIsOpen(value);
 	};
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -50,10 +49,24 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		onReset();
 	};
 
+	useOutsideClickClose({
+		isOpen: sideMenuIsOpen,
+		onChange: handleSideMenuClick,
+		rootRef: sideMenuRef,
+	});
+
+	useEffect(() => {
+		setDraftSettings(settings);
+	}, [settings]);
+
 	return (
 		<>
-			<ArrowButton isOpen={sideMenuIsOpen} onClick={handleSideMenuClick} />
+			<ArrowButton
+				isOpen={sideMenuIsOpen}
+				onClick={() => handleSideMenuClick(!sideMenuIsOpen)}
+			/>
 			<aside
+				ref={sideMenuRef}
 				className={clsx(styles.container, {
 					[styles.container_open]: sideMenuIsOpen,
 				})}>
