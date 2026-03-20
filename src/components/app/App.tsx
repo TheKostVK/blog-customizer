@@ -3,7 +3,6 @@ import {
 	defaultArticleState,
 } from 'src/constants/articleProps';
 import { CSSProperties, useState } from 'react';
-import clsx from 'clsx';
 import { ArticleParamsForm } from 'components/article-params-form';
 import { Article } from 'components/article';
 
@@ -26,7 +25,7 @@ const App = () => {
 
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={mapSettingsToCSSProperties(stylesSettings)}>
 			<ArticleParamsForm
 				settings={stylesSettings}
