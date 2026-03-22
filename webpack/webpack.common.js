@@ -51,7 +51,15 @@ module.exports = {
 			{
 				test: /\.(sa|sc|c)ss$/,
 				use: [
-					production ? MiniCssExtractPlugin.loader : 'style-loader',
+					production
+						? {
+								loader: MiniCssExtractPlugin.loader,
+								options: {
+									// Generate CSS asset urls relative to dist root for GitHub Pages.
+									publicPath: '../../',
+								},
+						  }
+						: 'style-loader',
 					{
 						loader: 'css-loader',
 						options: {
